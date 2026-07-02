@@ -1,0 +1,291 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f1016;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+/* Floating outer shapes (behind the calculator) */
+.shape {
+    position: absolute;
+    filter: blur(80px);
+    border-radius: 50%;
+    animation: floatShape 10s infinite ease-in-out alternate;
+}
+
+@keyframes floatShape {
+    0% { transform: translateY(0px) scale(1) rotate(0deg); }
+    100% { transform: translateY(-50px) scale(1.15) rotate(15deg); }
+}
+
+.shape-1 {
+    width: 450px;
+    height: 450px;
+    background: #ff007f;
+    top: -50px;
+    left: calc(50% - 400px);
+    opacity: 0.6;
+}
+
+.shape-2 {
+    width: 400px;
+    height: 400px;
+    background: #00f3ff;
+    bottom: -100px;
+    right: calc(50% - 350px);
+    opacity: 0.5;
+    animation-delay: -5s;
+    animation-duration: 12s;
+}
+
+.shape-3 {
+    width: 300px;
+    height: 300px;
+    background: #7000ff;
+    top: 40%;
+    left: 30%;
+    opacity: 0.6;
+    animation-delay: -2s;
+    animation-duration: 8s;
+}
+
+/* The ultimate glassmorphism container */
+.calculator {
+    width: 460px;
+    position: relative;
+    overflow: hidden; /* Crucial to contain the internal aurora animation */
+    
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    border-radius: 32px;
+    
+    border-top: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-left: 1.5px solid rgba(255, 255, 255, 0.35);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    
+    box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.1), 
+                0 35px 65px rgba(0, 0, 0, 0.6);
+    padding: 30px;
+}
+
+/* --- THE INTERNAL LIQUID/AURORA ANIMATION --- */
+/* These act as colored lights trapped inside the glass, moving around */
+.calculator::before,
+.calculator::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 0; /* Behind buttons and display */
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.calculator::before {
+    background: radial-gradient(circle at 30% 30%, rgba(255, 0, 127, 0.4), transparent 40%);
+    animation: auroraLiquid1 8s infinite ease-in-out alternate;
+}
+
+.calculator::after {
+    background: radial-gradient(circle at 70% 70%, rgba(0, 243, 255, 0.4), transparent 40%);
+    animation: auroraLiquid2 11s infinite ease-in-out alternate;
+}
+
+@keyframes auroraLiquid1 {
+    0% { transform: rotate(0deg) scale(1) translate(0%, 0%); }
+    50% { transform: rotate(45deg) scale(1.3) translate(10%, 15%); }
+    100% { transform: rotate(-20deg) scale(0.9) translate(-10%, -10%); }
+}
+
+@keyframes auroraLiquid2 {
+    0% { transform: rotate(0deg) scale(1) translate(0%, 0%); }
+    50% { transform: rotate(-45deg) scale(1.2) translate(-15%, -10%); }
+    100% { transform: rotate(30deg) scale(1.4) translate(10%, 15%); }
+}
+/* ------------------------------------------- */
+
+.display {
+    position: relative;
+    z-index: 2; /* Keep above the internal aurora */
+    width: 100%;
+    margin-bottom: 25px;
+    text-align: right;
+    color: white;
+    word-wrap: break-word;
+    word-break: break-all;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    
+    border-top: 1px solid rgba(0, 0, 0, 0.6);
+    border-left: 1px solid rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    
+    box-shadow: inset 0 8px 25px rgba(0,0,0,0.8);
+}
+
+.previous-operand {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.6);
+    min-height: 24px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.current-operand {
+    font-size: 2.6rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px rgba(255,255,255,0.4);
+}
+
+.buttons {
+    position: relative;
+    z-index: 2; /* Keep above the internal aurora */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    outline: none;
+    /* Transparent enough to let the aurora shine through */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
+    backdrop-filter: blur(10px);
+    
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 16px 0;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(255,255,255,0.1);
+}
+
+.btn:active {
+    transform: scale(0.9) translateY(2px);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), inset 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+}
+
+.btn:active::after {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 1;
+    transition: 0s;
+}
+
+.btn-sci {
+    font-size: 1.05rem;
+    color: #d8b4fe;
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.02));
+    border-top-color: rgba(168, 85, 247, 0.4);
+    border-left-color: rgba(168, 85, 247, 0.3);
+}
+.btn-sci:hover { 
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(168, 85, 247, 0.05));
+    box-shadow: 0 12px 25px rgba(168, 85, 247, 0.2);
+}
+
+.btn-operator {
+    background: linear-gradient(135deg, rgba(255, 0, 127, 0.2), rgba(255, 0, 127, 0.05));
+    color: #ffb3d9;
+    font-size: 1.5rem;
+    border-top-color: rgba(255, 0, 127, 0.5);
+    border-left-color: rgba(255, 0, 127, 0.3);
+}
+.btn-operator:hover { 
+    background: linear-gradient(135deg, rgba(255, 0, 127, 0.3), rgba(255, 0, 127, 0.1));
+    box-shadow: 0 12px 25px rgba(255, 0, 127, 0.3);
+}
+
+.btn-action {
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(0, 243, 255, 0.05));
+    color: #ccffff;
+    border-top-color: rgba(0, 243, 255, 0.5);
+    border-left-color: rgba(0, 243, 255, 0.3);
+}
+.btn-action:hover { 
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.3), rgba(0, 243, 255, 0.1));
+    box-shadow: 0 12px 25px rgba(0, 243, 255, 0.3);
+}
+
+.btn-equal {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    font-size: 1.8rem;
+    box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4), inset 0 0 15px rgba(255,255,255,0.2);
+    text-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+.btn-equal:hover {
+    background: linear-gradient(135deg, #a78bfa, #f472b6);
+    box-shadow: 0 15px 35px rgba(236, 72, 153, 0.6), inset 0 0 25px rgba(255,255,255,0.4);
+}
+.btn-equal:active { 
+    box-shadow: 0 0 35px rgba(236, 72, 153, 0.9);
+}
