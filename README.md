@@ -4,6 +4,8 @@ A beautiful, fully functional scientific calculator featuring an ultra-premium G
 
 ## ✨ Features
 
+**[🚀 Play with the Live Demo Here!](https://raw.githack.com/devanshtrivedi-bit/glassmorphism-calculator/main/index.html)**
+
 - **Stunning UI/UX**: Frosted glassmorphism design with a dynamic, glowing internal aurora animation.
 - **Scientific Engine**: Powered by `math.js` to handle complex equations, order of operations (BODMAS), and scientific functions (sin, cos, log, etc.).
 - **Haptic & Audio Feedback**: Custom-built "tick" sounds using the native Web Audio API for a satisfying mechanical feel on every press.
